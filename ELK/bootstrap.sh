@@ -70,7 +70,7 @@ cd beats-dashboards-1.2.3/
 # https://www.elastic.co/guide/en/beats/libbeat/current/installing-beats.html
 cd $INSTALL_DIR
 echo "deb https://packages.elastic.co/beats/apt stable main" |  sudo tee -a /etc/apt/sources.list.d/beats.list
-sudo apt-get update && sudo apt-get install filebeat
+sudo apt-get update -y && sudo apt-get install filebeat -y
 sudo rm -f /etc/filebeat/filebeat.yml
 sudo cat <<EOF > /etc/filebeat/filebeat.yml
 filebeat:
