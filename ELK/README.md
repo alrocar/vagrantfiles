@@ -6,4 +6,4 @@ A virtual machine with the ELK Stack
 - FileBeat
 - topbeat
 
-Once it starts go to: http://localhost:5601 configure the topbeat index and load the topbeat dashboard
+Once it starts go to: http://localhost:5601 and load the topbeat dashboard
