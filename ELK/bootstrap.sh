@@ -71,13 +71,38 @@ cd $INSTALL_DIR
 curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb https://packages.elastic.co/beats/apt stable main" |  sudo tee -a /etc/apt/sources.list.d/beats.list
 sudo apt-get update && sudo apt-get install filebeat
+sudo rm -f /etc/filebeat/filebeat.yml
+sudo cat <<EOF > /etc/filebeat/filebeat.yml
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/log/*.log
+      input_type: log
 
-# install top beat
+  registry_file: /var/lib/filebeat/registry
+
+output:
+
+  logstash:
+    hosts: ["localhost:5044"]
+
+shipper:
+logging:
+
+  files:
+    rotateeverybytes: 10485760 # = 10MB
+EOF
+curl -XPUT 'http://localhost:9200/_template/filebeat' -d@/etc/filebeat/filebeat.template.json
+sudo /etc/init.d/filebeat restart &
+
+# install topbeat
 # https://www.elastic.co/guide/en/beats/topbeat/1.2/topbeat-getting-started.html
 cd $INSTALL_DIR
 curl -L -O https://download.elastic.co/beats/topbeat/topbeat_1.2.3_amd64.deb
 sudo dpkg -i topbeat_1.2.3_amd64.deb
-sudo cat <<EOF > /etc/topbeat/topbeat.yaml
+sudo rm -f /etc/topbeat/topbeat.yml
+sudo cat <<EOF > /etc/topbeat/topbeat.yml
 input:
   period: 10
   procs: [".*"]
@@ -88,6 +113,7 @@ output:
     # Optional load balance the events between the Logstash hosts
     #loadbalance: true
 EOF
+curl -XPUT 'http://localhost:9200/_template/topbeat' -d@/etc/topbeat/topbeat.template.json
 sudo /etc/init.d/topbeat start &
 
 
