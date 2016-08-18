@@ -21,8 +21,8 @@ sudo /etc/init.d/elasticsearch start &
 cd $INSTALL_DIR
 curl -L -O https://download.elastic.co/logstash/logstash/packages/debian/logstash_2.3.2-1_all.deb
 sudo dpkg -i logstash_2.3.2-1_all.deb
-cd /etc/logstash
-./bin/logstash-plugin install logstash-input-beats
+cd /opt/logstash
+sudo ./bin/logstash-plugin install logstash-input-beats
 
 sudo cat <<EOF > /etc/logstash/conf.d/logstash.conf
 input {
@@ -50,6 +50,7 @@ cd $INSTALL_DIR
 #tar xzvf kibana-4.5.1-linux-x64.tar.gz
 #cd kibana-4.5.1-linux-x64/bin
 #sudo ./kibana &
+curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb http://packages.elastic.co/kibana/4.4/debian stable main" | sudo tee -a /etc/apt/sources.list.d/kibana-4.4.x.list
 sudo apt-get update -y
 sudo apt-get -y install kibana
@@ -68,7 +69,6 @@ cd beats-dashboards-1.2.3/
 # install beats
 # https://www.elastic.co/guide/en/beats/libbeat/current/installing-beats.html
 cd $INSTALL_DIR
-curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb https://packages.elastic.co/beats/apt stable main" |  sudo tee -a /etc/apt/sources.list.d/beats.list
 sudo apt-get update && sudo apt-get install filebeat
 sudo rm -f /etc/filebeat/filebeat.yml
