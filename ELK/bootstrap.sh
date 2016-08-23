@@ -116,4 +116,46 @@ EOF
 curl -XPUT 'http://localhost:9200/_template/topbeat' -d@/etc/topbeat/topbeat.template.json
 sudo /etc/init.d/topbeat start &
 
+# install packetbeat
+# https://www.elastic.co/guide/en/beats/packetbeat/current/packetbeat-overview.html
+cd $INSTALL_DIR
+sudo apt-get install libpcap0.8
+curl -L -O https://download.elastic.co/beats/packetbeat/packetbeat_1.2.3_amd64.deb
+sudo dpkg -i packetbeat_1.2.3_amd64.deb
+sudo rm -f /etc/packetbeat/packetbeat.yml
+sudo cat <<EOF > /etc/packetbeat/packetbeat.yml
+interfaces:
+  device: any
+protocols:
+  dns:
+    ports: [53]
 
+    include_authorities: true
+    include_additionals: true
+
+  http:
+    ports: [80]
+
+  #memcache:
+    #ports: [11211]
+
+  #mysql:
+    #ports: [3306]
+
+  pgsql:
+    ports: [5432]
+
+  #redis:
+    #ports: [6379]
+
+  #thrift:
+    #ports: [9090]
+
+  #mongodb:
+    #ports: [27017]
+output:
+  logstash:
+    hosts: ["127.0.0.1:5044"]
+EOF
+curl -XPUT 'http://localhost:9200/_template/packetbeat' -d@/etc/packetbeat/packetbeat.template.json
+sudo /etc/init.d/packetbeat start &
