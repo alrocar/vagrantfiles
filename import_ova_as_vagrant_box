@@ -1,0 +1,17 @@
+1. Import OVA into VirtualBox (either manually or with VBoxManage)
+VBoxManage import PATH_TO_OVA.ova --vsys 0 --eula accept
+
+2. Find the VBox image ID
+VBoxManage list vms
+
+3. Package it as a Vagrant Box
+vagrant package --base THE_VBOX_IMAGE_IDE --output THE_BOX_NAME.box
+
+4. Add the box to your local Vagrant boxes:
+vagrant box add THE_BOX_NAME.box --name THE_BOX_NAME
+
+5. Finally you can use THE_BOX_NAME in your Vagrantfile
+Vagrant.configure("2") do |config|
+  config.vm.box = "THE_BOX_NAME"
+  # ...
+end
