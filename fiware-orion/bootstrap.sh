@@ -34,5 +34,14 @@ unzip $ORION_VERSION.zip -d .
 cd $ORION_DIR/docker
 sudo docker-compose up -d
 
+# smoke test
 # curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:1026/version"
 curl "http://localhost:1026/version"
+
+# start accumulator (optional)
+#sudo apt-get -y install python-pip
+#curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+#sudo python get-pip.py
+#sudo pip install Flask
+#cd ~/$ORION_DIR/scripts
+#./accumulator-server.py --port 1028 --url /accumulate --host ::1 --pretty-print -v
