@@ -33,3 +33,6 @@ unzip $ORION_VERSION.zip -d .
 # start fiware-orion docker container
 cd $ORION_DIR/docker
 sudo docker-compose up -d
+
+# curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:1026/version"
+curl "http://localhost:1026/version"
