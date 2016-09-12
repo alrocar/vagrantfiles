@@ -1,4 +1,5 @@
 #!/bin/bash
+
 sudo apt-get update -y
 sudo apt-get install apt-transport-https ca-certificates -y
 sudo apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual -y
