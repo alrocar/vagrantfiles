@@ -22,8 +22,8 @@ cat <<EOF > /etc/init.d/start-swagger.sh
 # Provides:          start-swagger
 # Required-Start:    $remote_fs
 # Required-Stop:     $remote_fs
-# Default-Start:     S
-# Default-Stop:      
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: Start swagger ui and editor
 # Description:       Start swagger ui and editor
 ### END INIT INFO
