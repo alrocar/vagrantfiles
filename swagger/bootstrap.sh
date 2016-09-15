@@ -17,6 +17,17 @@ docker run -d --name swagger-ui -p 8081:8080 swagger-ui-builder
 # init script
 cat <<EOF > /etc/init.d/start-swagger.sh
 #!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          start-swagger
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
+# Default-Start:     S
+# Default-Stop:      
+# Short-Description: Start swagger ui and editor
+# Description:       Start swagger ui and editor
+### END INIT INFO
+
 set -e
 
 case "\$1" in
@@ -33,4 +44,4 @@ EOF
 
 # start on boot
 chmod +x /etc/init.d/start-swagger.sh
-sudo update-rc.d start-swagger.sh defaults 10
+sudo update-rc.d start-swagger.sh defaults
